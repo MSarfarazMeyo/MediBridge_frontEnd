@@ -65,21 +65,21 @@ const ProfilePicture = ({ avatar }) => {
           document.getElementById("portal")
         )}
 
-      <div className="w-full flex items-center gap-x-4">
-        <div className="relative w-20 h-20 rounded-full outline outline-offset-2 outline-1 lutline-primary overflow-hidden">
+      <div className="flex w-full items-center justify-center gap-x-4">
+        <div className="lutline-primary relative h-[150px] w-[150px] overflow-hidden rounded-full outline outline-1 outline-offset-2">
           <label
             htmlFor="profilePicture"
-            className="cursor-pointer absolute inset-0 rounded-full bg-transparent"
+            className="absolute inset-0 cursor-pointer rounded-full bg-transparent"
           >
             {avatar ? (
               <img
                 src={stables.UPLOAD_FOLDER_BASE_URL + avatar}
                 alt="profile"
-                className="w-full h-full object-cover"
+                className="h-full w-full object-cover"
               />
             ) : (
-              <div className="w-full h-full bg-blue-50/50 flex justify-center items-center">
-                <HiOutlineCamera className="w-7 h-auto text-primary" />
+              <div className="flex h-full w-full items-center justify-center bg-blue-50/50">
+                <HiOutlineCamera className="h-auto w-7 text-primary" />
               </div>
             )}
           </label>
@@ -93,7 +93,7 @@ const ProfilePicture = ({ avatar }) => {
         <button
           onClick={handleDeleteImage}
           type="button"
-          className="border border-red-500 rounded-lg px-4 py-2 text-red-500"
+          className="rounded-lg border border-red-500 px-4 py-2 text-red-500"
         >
           Delete
         </button>

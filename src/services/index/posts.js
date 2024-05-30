@@ -58,7 +58,7 @@ export const updatePost = async ({ updatedData, slug, token }) => {
   }
 };
 
-export const createPost = async ({ token }) => {
+export const createPost = async ({ updatedData, token }) => {
   try {
     const config = {
       headers: {
@@ -66,7 +66,7 @@ export const createPost = async ({ token }) => {
       },
     };
 
-    const { data } = await axios.post(`/api/posts`, {}, config);
+    const { data } = await axios.post(`/api/posts`, updatedData, config);
     return data;
   } catch (error) {
     if (error.response && error.response.data.message)

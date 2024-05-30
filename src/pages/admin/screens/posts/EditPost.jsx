@@ -29,7 +29,7 @@ const EditPost = () => {
   const userState = useSelector((state) => state.user);
   const [initialPhoto, setInitialPhoto] = useState(null);
   const [photo, setPhoto] = useState(null);
-  const [body, setBody] = useState(null);
+  const [body, setBody] = useState("Description of the post");
   const [categories, setCategories] = useState(null);
   const [title, setTitle] = useState("");
   const [tags, setTags] = useState(null);
@@ -116,30 +116,30 @@ const EditPost = () => {
   let isPostDataLoaded = !isLoading && !isError;
 
   return (
-    <div>
+    <div className="bg-gray-100">
       {isLoading ? (
         <ArticleDetailSkeleton />
       ) : isError ? (
         <ErrorMessage message="Couldn't fetch the post detail" />
       ) : (
-        <section className="container mx-auto max-w-5xl flex flex-col px-5 py-5 lg:flex-row lg:gap-x-5 lg:items-start">
-          <article className="flex-1">
+        <section className="container mx-auto flex flex-col px-5 py-5">
+          <article className="border-b border-gray-200 bg-white px-5 py-5 text-base md:text-lg">
             <label htmlFor="postPicture" className="w-full cursor-pointer">
               {photo ? (
                 <img
                   src={URL.createObjectURL(photo)}
                   alt={data?.title}
-                  className="rounded-xl w-full"
+                  className="h-[200px] w-full rounded-xl"
                 />
               ) : initialPhoto ? (
                 <img
                   src={stables.UPLOAD_FOLDER_BASE_URL + data?.photo}
                   alt={data?.title}
-                  className="rounded-xl w-full"
+                  className="h-[200px] w-full rounded-xl"
                 />
               ) : (
-                <div className="w-full min-h-[200px] bg-blue-50/50 flex justify-center items-center">
-                  <HiOutlineCamera className="w-7 h-auto text-primary" />
+                <div className="flex h-[200px] w-full items-center justify-center bg-blue-50/50">
+                  <HiOutlineCamera className="h-auto w-7 text-primary" />
                 </div>
               )}
             </label>
@@ -152,7 +152,7 @@ const EditPost = () => {
             <button
               type="button"
               onClick={handleDeleteImage}
-              className="w-fit bg-red-500 text-sm text-white font-semibold rounded-lg px-2 py-1 mt-5"
+              className="mt-5 w-fit rounded-lg bg-red-500 px-2 py-1 text-sm font-semibold text-white"
             >
               Delete Image
             </button>
@@ -160,7 +160,7 @@ const EditPost = () => {
               {data?.categories.map((category) => (
                 <Link
                   to={`/blog?category=${category.name}`}
-                  className="text-primary text-sm font-roboto inline-block md:text-base"
+                  className="inline-block font-roboto text-sm text-primary md:text-base"
                 >
                   {category.name}
                 </Link>
@@ -173,7 +173,7 @@ const EditPost = () => {
               <input
                 id="title"
                 value={title}
-                className="d-input d-input-bordered border-slate-300 !outline-slate-300 text-xl font-medium font-roboto text-dark-hard"
+                className="d-input-bordered d-input border-slate-300 font-roboto text-xl font-medium text-dark-hard !outline-slate-300"
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="title"
               />
@@ -185,25 +185,12 @@ const EditPost = () => {
               <input
                 id="caption"
                 value={caption}
-                className="d-input d-input-bordered border-slate-300 !outline-slate-300 text-xl font-medium font-roboto text-dark-hard"
+                className="d-input-bordered d-input border-slate-300 font-roboto text-xl font-medium text-dark-hard !outline-slate-300"
                 onChange={(e) => setCaption(e.target.value)}
                 placeholder="caption"
               />
             </div>
-            <div className="d-form-control w-full">
-              <label className="d-label" htmlFor="slug">
-                <span className="d-label-text">slug</span>
-              </label>
-              <input
-                id="slug"
-                value={postSlug}
-                className="d-input d-input-bordered border-slate-300 !outline-slate-300 text-xl font-medium font-roboto text-dark-hard"
-                onChange={(e) =>
-                  setPostSlug(e.target.value.replace(/\s+/g, "-").toLowerCase())
-                }
-                placeholder="post slug"
-              />
-            </div>
+
             <div className="mb-5 mt-2">
               <label className="d-label">
                 <span className="d-label-text">categories</span>
@@ -251,7 +238,7 @@ const EditPost = () => {
               disabled={isLoadingUpdatePostDetail}
               type="button"
               onClick={handleUpdatePost}
-              className="w-full bg-green-500 text-white font-semibold rounded-lg px-4 py-2 disabled:cursor-not-allowed disabled:opacity-70"
+              className="w-full rounded-lg bg-green-500 px-4 py-2 font-semibold text-white disabled:cursor-not-allowed disabled:opacity-70"
             >
               Update Post
             </button>

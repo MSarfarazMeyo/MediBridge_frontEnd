@@ -12,6 +12,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 import { createPost } from "../../../../services/index/posts";
+import { createNew } from "../../../../services/index/users";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -20,6 +21,39 @@ const Header = () => {
   const [isMenuActive, setIsMenuActive] = useState(false);
   const [activeNavName, setActiveNavName] = useState("dashboard");
   const windowSize = useWindowSize();
+
+  const { mutate: mutateCreateDoctor, isLoading: isLoading } = useMutation({
+    mutationFn: ({ token }) => {
+      return createNew({
+        token,
+      });
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries(["posts"]);
+      toast.success("Post is created, edit that now!");
+      navigate(`/admin/doctor/profile`, { state: { id: data._id } });
+    },
+    onError: (error) => {
+      toast.error(error.message);
+      console.log(error);
+    },
+  });
+
+  const { mutate: mutateCreateManager, isLoading: isLoadingManager } =
+    useMutation({
+      mutationFn: ({ token }) => {
+        return createNew({
+          token,
+        });
+      },
+      onSuccess: (data) => {
+        navigate(`/admin/manager/profile`, { state: { id: data._id } });
+      },
+      onError: (error) => {
+        toast.error(error.message);
+        console.log(error);
+      },
+    });
 
   const { mutate: mutateCreatePost, isLoading: isLoadingCreatePost } =
     useMutation({
@@ -55,18 +89,26 @@ const Header = () => {
     mutateCreatePost({ token });
   };
 
+  const handleCreateNewDoctort = ({ token }) => {
+    mutateCreateDoctor({ token });
+  };
+
+  const handleCreateNewManager = ({ token }) => {
+    mutateCreateManager({ token });
+  };
+
   return (
     <header className="flex h-fit w-full items-center justify-between p-4 lg:h-full lg:max-w-[300px] lg:flex-col lg:items-start lg:justify-start lg:p-0">
       {/* logo */}
       <Link to="/">
-        <img src={images.Logo} alt="logo" className="w-16 lg:hidden" />
+        <img src={images.Logo} alt="logo" className="w-48 lg:hidden" />
       </Link>
       {/* menu burger icon */}
       <div className="cursor-pointer lg:hidden">
         {isMenuActive ? (
-          <AiOutlineClose className="w-6 h-6" onClick={toggleMenuHandler} />
+          <AiOutlineClose className="h-6 w-6" onClick={toggleMenuHandler} />
         ) : (
-          <AiOutlineMenu className="w-6 h-6" onClick={toggleMenuHandler} />
+          <AiOutlineMenu className="h-6 w-6" onClick={toggleMenuHandler} />
         )}
       </div>
       {/* sidebar container */}
@@ -80,7 +122,7 @@ const Header = () => {
           {/* sidebar */}
           <div className="fixed top-0 bottom-0 left-0 z-50 w-3/4 overflow-y-auto bg-white p-4 lg:static lg:h-full lg:w-full lg:p-6">
             <Link to="/">
-              <img src={images.Logo} alt="logo" className="w-16" />
+              <img src={images.Logo} alt="logo" className="w-48" />
             </Link>
             <h4 className="mt-10 font-bold text-[#C7C7C7]">MAIN MENU</h4>
             {/* menu items */}
@@ -102,6 +144,15 @@ const Header = () => {
                 setActiveNavName={setActiveNavName}
               />
 
+              <NavItem
+                title="Messages"
+                link="/admin/chat"
+                icon={<FaComments className="text-xl" />}
+                name="messages"
+                activeNavName={activeNavName}
+                setActiveNavName={setActiveNavName}
+              />
+
               <NavItemCollapse
                 title="Posts"
                 icon={<MdDashboard className="text-xl" />}
@@ -112,7 +163,7 @@ const Header = () => {
                 <Link to="/admin/posts/manage">Manage all posts</Link>
                 <button
                   disabled={isLoadingCreatePost}
-                  className="text-start disabled:opacity-60 disabled:cursor-not-allowed"
+                  className="text-start disabled:cursor-not-allowed disabled:opacity-60"
                   onClick={() =>
                     handleCreateNewPost({ token: userState.userInfo.token })
                   }
@@ -120,6 +171,44 @@ const Header = () => {
                   Add New Post
                 </button>
                 <Link to="/admin/categories/manage">Categories</Link>
+              </NavItemCollapse>
+
+              <NavItemCollapse
+                title="Doctors"
+                icon={<MdDashboard className="text-xl" />}
+                name="doctors"
+                activeNavName={activeNavName}
+                setActiveNavName={setActiveNavName}
+              >
+                <Link to="/admin/doctors/manage">Manage all Doctors</Link>
+                <button
+                  disabled={isLoadingCreatePost}
+                  className="text-start disabled:cursor-not-allowed disabled:opacity-60"
+                  onClick={() =>
+                    handleCreateNewDoctort({ token: userState.userInfo.token })
+                  }
+                >
+                  Add New Doctor
+                </button>
+              </NavItemCollapse>
+
+              <NavItemCollapse
+                title="Managers"
+                icon={<MdDashboard className="text-xl" />}
+                name="manager"
+                activeNavName={activeNavName}
+                setActiveNavName={setActiveNavName}
+              >
+                <Link to="/admin/manager/manage">All Managers </Link>
+                <button
+                  disabled={isLoadingCreatePost}
+                  className="text-start disabled:cursor-not-allowed disabled:opacity-60"
+                  onClick={() =>
+                    handleCreateNewManager({ token: userState.userInfo.token })
+                  }
+                >
+                  Add New Manager
+                </button>
               </NavItemCollapse>
 
               <NavItem

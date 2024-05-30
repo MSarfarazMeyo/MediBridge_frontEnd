@@ -21,9 +21,16 @@ const Editor = ({ onDataChange, content, editable }) => {
   });
 
   return (
-    <div className="w-full relative">
+    <div
+      className={`relative w-full ${
+        editable ? "rounded border border-gray-300" : ""
+      }`}
+    >
       {editable && <MenuBar editor={editor} />}
-      <EditorContent editor={editor} />
+      <EditorContent
+        className="min-h-[200px] w-full border-gray-300"
+        editor={editor}
+      />
     </div>
   );
 };

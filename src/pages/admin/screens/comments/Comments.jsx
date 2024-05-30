@@ -81,7 +81,7 @@ const Comments = () => {
     >
       {commentsData?.data.map((comment) => (
         <tr>
-          <td className="px-5 py-5 text-sm bg-white border-b border-gray-200">
+          <td className="border-b border-gray-200 bg-white px-5 py-5 text-sm">
             <div className="flex items-center">
               <div className="flex-shrink-0">
                 <a href="/" className="relative block">
@@ -92,20 +92,20 @@ const Comments = () => {
                         : images.userImage
                     }
                     alt={comment?.user?.name}
-                    className="mx-auto object-cover rounded-lg w-10 aspect-square"
+                    className="mx-auto aspect-square w-10 rounded-lg object-cover"
                   />
                 </a>
               </div>
               <div className="ml-3">
-                <p className="text-gray-900 whitespace-no-wrap">
+                <p className="whitespace-no-wrap text-gray-900">
                   {comment?.user?.name}
                 </p>
               </div>
             </div>
           </td>
-          <td className="px-5 py-5 text-sm bg-white border-b border-gray-200">
+          <td className="border-b border-gray-200 bg-white px-5 py-5 text-sm">
             {comment?.replyOnUser !== null && (
-              <p className="text-gray-900 whitespace-no-wrap">
+              <p className="whitespace-no-wrap text-gray-900">
                 In reply to{" "}
                 <Link
                   to={`/blog/${comment?.post?.slug}/#comment-${comment?._id}`}
@@ -115,10 +115,10 @@ const Comments = () => {
                 </Link>
               </p>
             )}
-            <p className="text-gray-900 whitespace-no-wrap">{comment?.desc}</p>
+            <p className="whitespace-no-wrap text-gray-900">{comment?.desc}</p>
           </td>
-          <td className="px-5 py-5 text-sm bg-white border-b border-gray-200">
-            <p className="text-gray-900 whitespace-no-wrap">
+          <td className="border-b border-gray-200 bg-white px-5 py-5 text-sm">
+            <p className="whitespace-no-wrap text-gray-900">
               <Link
                 to={`/blog/${comment?.post?.slug}`}
                 className="text-blue-500"
@@ -127,8 +127,8 @@ const Comments = () => {
               </Link>
             </p>
           </td>
-          <td className="px-5 py-5 text-sm bg-white border-b border-gray-200">
-            <p className="text-gray-900 whitespace-no-wrap">
+          <td className="border-b border-gray-200 bg-white px-5 py-5 text-sm">
+            <p className="whitespace-no-wrap text-gray-900">
               {new Date(comment.createdAt).toLocaleDateString("en-US", {
                 day: "2-digit",
                 month: "2-digit",
@@ -138,7 +138,7 @@ const Comments = () => {
               })}
             </p>
           </td>
-          <td className="px-5 py-5 text-sm bg-white border-b border-gray-200 space-x-5">
+          <td className="space-x-5 border-b border-gray-200 bg-white px-5 py-5 text-sm">
             <button
               disabled={isLoadingDeleteData}
               type="button"
@@ -146,7 +146,7 @@ const Comments = () => {
                 comment?.check
                   ? "text-yellow-600 hover:text-yellow-900"
                   : "text-green-600 hover:text-green-900"
-              } disabled:opacity-70 disabled:cursor-not-allowed`}
+              } disabled:cursor-not-allowed disabled:opacity-70`}
               onClick={() => {
                 mutateUpdateCommentCheck({
                   token: userState.userInfo.token,
@@ -160,7 +160,7 @@ const Comments = () => {
             <button
               disabled={isLoadingDeleteData}
               type="button"
-              className="text-red-600 hover:text-red-900 disabled:opacity-70 disabled:cursor-not-allowed"
+              className="text-red-600 hover:text-red-900 disabled:cursor-not-allowed disabled:opacity-70"
               onClick={() => {
                 deleteDataHandler({
                   slug: comment?._id,

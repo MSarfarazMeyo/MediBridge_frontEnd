@@ -10,7 +10,7 @@ const HomePage = () => {
     <MainLayout>
       <Hero />
       <Articles />
-      <CTA />
+   
     </MainLayout>
   );
 };

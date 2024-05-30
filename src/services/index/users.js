@@ -1,11 +1,12 @@
 import axios from "axios";
 
-export const signup = async ({ name, email, password }) => {
+export const signup = async ({ name, email, password , connectCubeId }) => {
   try {
     const { data } = await axios.post("/api/users/register", {
       name,
       email,
       password,
+      connectCubeId
     });
     return data;
   } catch (error) {
@@ -21,6 +22,22 @@ export const login = async ({ email, password }) => {
       email,
       password,
     });
+    return data;
+  } catch (error) {
+    if (error.response && error.response.data.message)
+      throw new Error(error.response.data.message);
+    throw new Error(error.message);
+  }
+};
+
+export const createNew = async ({ token }) => {
+  try {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const { data } = await axios.post("/api/users/create", {}, config);
     return data;
   } catch (error) {
     if (error.response && error.response.data.message)
@@ -53,10 +70,40 @@ export const updateProfile = async ({ token, userData, userId }) => {
         Authorization: `Bearer ${token}`,
       },
     };
-
     const { data } = await axios.put(
       `/api/users/updateProfile/${userId}`,
       userData,
+      config
+    );
+    return data;
+  } catch (error) {
+    if (error.response && error.response.data.message)
+      throw new Error(error.response.data.message);
+    throw new Error(error.message);
+  }
+};
+
+export const getSingleUser = async ({ userId }) => {
+  try {
+    const { data } = await axios.get(`/api/users/getSingle/${userId}`);
+    return data;
+  } catch (error) {
+    if (error.response && error.response.data.message)
+      throw new Error(error.response.data.message);
+    throw new Error(error.message);
+  }
+};
+
+export const updateUser = async ({ updatedData, userId, token }) => {
+  try {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const { data } = await axios.put(
+      `/api/users/updateUser/${userId}`,
+      updatedData,
       config
     );
     return data;
@@ -93,9 +140,12 @@ export const getAllUsers = async (
   token,
   searchKeyword = "",
   page = 1,
+  role,
   limit = 10
 ) => {
   try {
+    console.log("role", role);
+
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -103,10 +153,21 @@ export const getAllUsers = async (
     };
 
     const { data, headers } = await axios.get(
-      `/api/users?searchKeyword=${searchKeyword}&page=${page}&limit=${limit}`,
+      `/api/users?searchKeyword=${searchKeyword}&page=${page}&limit=${limit}&role=${role}`,
       config
     );
     return { data, headers };
+  } catch (error) {
+    if (error.response && error.response.data.message)
+      throw new Error(error.response.data.message);
+    throw new Error(error.message);
+  }
+};
+
+export const getDashboardData = async (token) => {
+  try {
+    const { data } = await axios.get(`/api/users/dashboard`);
+    return { data };
   } catch (error) {
     if (error.response && error.response.data.message)
       throw new Error(error.response.data.message);

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
@@ -8,23 +8,40 @@ import { useDispatch, useSelector } from "react-redux";
 import MainLayout from "../../components/MainLayout";
 import { login } from "../../services/index/users";
 import { userActions } from "../../store/reducers/userReducers";
+import Auth from "../../services/auth-service";
+import ChatContext from "../../services/chat-service";
 
-const LoginPage = () => {
+const LoginPage = (props) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const context = useContext(ChatContext);
   const userState = useSelector((state) => state.user);
-
-  const { mutate, isLoading } = useMutation({
+  const { mutate, isLoading, isError } = useMutation({
     mutationFn: ({ email, password }) => {
       return login({ email, password });
     },
     onSuccess: (data) => {
+      Auth.login(data.email, "txend1122")
+        .then((userCredentials) => {
+          let chatCredentials = {
+            userId: userCredentials.userInfo.id,
+            password: { token: userCredentials.password },
+          };
+          console.log("userCredentials.userInfo", userCredentials.userInfo);
+          context.connectToChat(chatCredentials);
+        })
+        .catch((error) => {
+          console.log(error);
+          alert("No such user");
+        });
+
       dispatch(userActions.setUserInfo(data));
       localStorage.setItem("account", JSON.stringify(data));
     },
     onError: (error) => {
       toast.error(error.message);
       console.log(error);
+      Auth.logout();
     },
   });
 
@@ -46,23 +63,29 @@ const LoginPage = () => {
     mode: "onChange",
   });
 
-  const submitHandler = (data) => {
-    const { email, password } = data;
-    mutate({ email, password });
+  const submitHandler = async (data) => {
+    try {
+      const { email, password } = data;
+      mutate({ email, password });
+    } catch (error) {
+      console.log("error", error);
+
+      toast.error(error.message);
+    }
   };
 
   return (
     <MainLayout>
       <section className="container mx-auto px-5 py-10">
-        <div className="w-full max-w-sm mx-auto">
-          <h1 className="font-roboto text-2xl font-bold text-center text-dark-hard mb-8">
+        <div className="mx-auto w-full max-w-sm">
+          <h1 className="mb-8 text-center font-roboto text-2xl font-bold text-dark-hard">
             Login
           </h1>
           <form onSubmit={handleSubmit(submitHandler)}>
-            <div className="flex flex-col mb-6 w-full">
+            <div className="mb-6 flex w-full flex-col">
               <label
                 htmlFor="email"
-                className="text-[#5a7184] font-semibold block"
+                className="block font-semibold text-[#5a7184]"
               >
                 Email
               </label>
@@ -81,20 +104,20 @@ const LoginPage = () => {
                   },
                 })}
                 placeholder="Enter email"
-                className={`placeholder:text-[#959ead] text-dark-hard mt-3 rounded-lg px-5 py-4 font-semibold block outline-none border ${
+                className={`mt-3 block rounded-lg border px-5 py-4 font-semibold text-dark-hard outline-none placeholder:text-[#959ead] ${
                   errors.email ? "border-red-500" : "border-[#c3cad9]"
                 }`}
               />
               {errors.email?.message && (
-                <p className="text-red-500 text-xs mt-1">
+                <p className="mt-1 text-xs text-red-500">
                   {errors.email?.message}
                 </p>
               )}
             </div>
-            <div className="flex flex-col mb-6 w-full">
+            <div className="mb-6 flex w-full flex-col">
               <label
                 htmlFor="password"
-                className="text-[#5a7184] font-semibold block"
+                className="block font-semibold text-[#5a7184]"
               >
                 Password
               </label>
@@ -112,12 +135,12 @@ const LoginPage = () => {
                   },
                 })}
                 placeholder="Enter password"
-                className={`placeholder:text-[#959ead] text-dark-hard mt-3 rounded-lg px-5 py-4 font-semibold block outline-none border ${
+                className={`mt-3 block rounded-lg border px-5 py-4 font-semibold text-dark-hard outline-none placeholder:text-[#959ead] ${
                   errors.password ? "border-red-500" : "border-[#c3cad9]"
                 }`}
               />
               {errors.password?.message && (
-                <p className="text-red-500 text-xs mt-1">
+                <p className="mt-1 text-xs text-red-500">
                   {errors.password?.message}
                 </p>
               )}
@@ -131,7 +154,7 @@ const LoginPage = () => {
             <button
               type="submit"
               disabled={!isValid || isLoading}
-              className="bg-primary text-white font-bold text-lg py-4 px-8 w-full rounded-lg my-6 disabled:opacity-70 disabled:cursor-not-allowed"
+              className="my-6 w-full rounded-lg bg-primary py-4 px-8 text-lg font-bold text-white disabled:cursor-not-allowed disabled:opacity-70"
             >
               Sign In
             </button>
