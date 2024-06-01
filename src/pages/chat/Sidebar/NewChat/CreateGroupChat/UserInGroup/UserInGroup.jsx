@@ -5,10 +5,10 @@ const UserInGroup = (props) => {
   const { user } = props;
   return (
     <div className="user__in-group group-list">
-      {user.avatar ? (
+      {user?.avatar ? (
         <img
           className="group-list__avatar"
-          src={`${user.avatar}`}
+          src={`${user?.avatar}`}
           alt="User Avatar"
         />
       ) : (

@@ -6,8 +6,6 @@ import { images, stables } from "../constants";
 import { Link } from "react-router-dom";
 
 const ArticleCard = ({ post, className }) => {
-  console.log("post", post);
-
   return (
     <div
       className={`overflow-hidden rounded-xl shadow-[rgba(7,_65,_210,_0.1)_0px_9px_30px] ${className}`}
@@ -68,8 +66,8 @@ const ArticleCard = ({ post, className }) => {
           <div className="flex items-center gap-x-2 md:gap-x-2.5">
             <img
               src={
-                post.user.avatar
-                  ? stables.UPLOAD_FOLDER_BASE_URL + post.user.avatar
+                post?.user?.avatar
+                  ? stables.UPLOAD_FOLDER_BASE_URL + post?.user?.avatar
                   : images.userImage
               }
               alt="post profile"
@@ -77,15 +75,15 @@ const ArticleCard = ({ post, className }) => {
             />
             <div className="flex flex-col">
               <h4 className="text-sm font-bold italic text-dark-soft md:text-base">
-                {post.user.name}
+                {post?.user?.name}
               </h4>
               <div className="flex items-center gap-x-2">
                 <span
                   className={`${
-                    post.user.verified ? "bg-[#36B37E]" : "bg-red-500"
+                    post?.user?.verified ? "bg-[#36B37E]" : "bg-red-500"
                   } w-fit rounded-full bg-opacity-20 p-1.5`}
                 >
-                  {post.user.verified ? (
+                  {post?.user?.verified ? (
                     <BsCheckLg className="h-1.5 w-1.5 text-[#36B37E]" />
                   ) : (
                     <AiOutlineClose className="h-1.5 w-1.5 text-red-500" />

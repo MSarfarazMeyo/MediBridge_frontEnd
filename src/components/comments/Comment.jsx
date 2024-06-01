@@ -30,7 +30,7 @@ const Comment = ({
 
   return (
     <div
-      className="flex flex-nowrap items-start gap-x-3 bg-[#F2F4F5] p-3 rounded-lg"
+      className="flex flex-nowrap items-start gap-x-3 rounded-lg bg-[#F2F4F5] p-3"
       id={`comment-${comment?._id}`}
     >
       <img
@@ -40,10 +40,10 @@ const Comment = ({
             : images.userImage
         }
         alt="user profile"
-        className="w-9 h-9 object-cover rounded-full"
+        className="h-9 w-9 rounded-full object-cover"
       />
-      <div className="flex-1 flex flex-col">
-        <h5 className="font-bold text-dark-hard text-xs lg:text-sm">
+      <div className="flex flex-1 flex-col">
+        <h5 className="text-xs font-bold text-dark-hard lg:text-sm">
           {comment.user.name}
         </h5>
         <span className="text-xs text-dark-light">
@@ -55,7 +55,7 @@ const Comment = ({
           })}
         </span>
         {!isEditing && (
-          <p className="font-opensans mt-[10px] text-dark-light">
+          <p className="mt-[10px] font-opensans text-dark-light">
             {comment.desc}
           </p>
         )}
@@ -67,7 +67,7 @@ const Comment = ({
             initialText={comment.desc}
           />
         )}
-        <div className="flex items-center gap-x-3 text-dark-light font-roboto text-sm mt-3 mb-3">
+        <div className="mt-3 mb-3 flex items-center gap-x-3 font-roboto text-sm text-dark-light">
           {isUserLoggined && (
             <button
               className="flex items-center space-x-2"
@@ -75,7 +75,7 @@ const Comment = ({
                 setAffectedComment({ type: "replying", _id: comment._id })
               }
             >
-              <FiMessageSquare className="w-4 h-auto" />
+              <FiMessageSquare className="h-auto w-4" />
               <span>Reply</span>
             </button>
           )}
@@ -87,14 +87,14 @@ const Comment = ({
                   setAffectedComment({ type: "editing", _id: comment._id })
                 }
               >
-                <FiEdit2 className="w-4 h-auto" />
+                <FiEdit2 className="h-auto w-4" />
                 <span>Edit</span>
               </button>
               <button
                 className="flex items-center space-x-2"
                 onClick={() => deleteComment(comment._id)}
               >
-                <FiTrash className="w-4 h-auto" />
+                <FiTrash className="h-auto w-4" />
                 <span>Delete</span>
               </button>
             </>

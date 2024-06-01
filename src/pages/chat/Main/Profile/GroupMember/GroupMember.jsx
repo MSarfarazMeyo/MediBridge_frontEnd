@@ -16,10 +16,10 @@ const GroupMember = (props) => {
     <div className="member">
       <div className="member__photo-container">
         {userInfo ? (
-          userInfo.avatar ? (
+          userInfo?.avatar ? (
             <img
               className="member__avatar-img"
-              src={userInfo.avatar}
+              src={userInfo?.avatar}
               alt="User avatar"
             />
           ) : (

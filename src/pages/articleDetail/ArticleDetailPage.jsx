@@ -20,7 +20,6 @@ const ArticleDetailPage = () => {
   const userState = useSelector((state) => state.user);
   const [breadCrumbsData, setbreadCrumbsData] = useState([]);
   const [body, setBody] = useState(null);
-
   const { data, isLoading, isError } = useQuery({
     queryFn: () => getSinglePost({ slug }),
     queryKey: ["blog", slug],

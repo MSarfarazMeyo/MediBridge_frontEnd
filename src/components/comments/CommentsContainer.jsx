@@ -27,9 +27,8 @@ const CommentsContainer = ({
         return createNewComment({ token, desc, slug, parent, replyOnUser });
       },
       onSuccess: () => {
-        toast.success(
-          "Your comment is sent successfully, it will be visible after the confirmation of the Admin"
-        );
+        toast.success("Your comment added");
+        queryClient.invalidateQueries(["blog", postSlug]);
       },
       onError: (error) => {
         toast.error(error.message);
@@ -96,7 +95,7 @@ const CommentsContainer = ({
         formSubmitHanlder={(value) => addCommentHandler(value)}
         loading={isLoadingNewComment}
       />
-      <div className="space-y-4 mt-8">
+      <div className="mt-8 space-y-4">
         {comments.map((comment) => (
           <Comment
             key={comment._id}

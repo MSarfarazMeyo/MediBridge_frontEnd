@@ -45,18 +45,7 @@ const EditManager = () => {
   const [tags, setTags] = useState(null);
   const [postSlug, setPostSlug] = useState();
   const [caption, setCaption] = useState("");
-
-  const signUpChat = async (userName, login, password) => {
-    try {
-      const user = await Auth.signupOther(userName, login, password);
-      toast.success("registered");
-      return user;
-    } catch (error) {
-      console.log(error);
-      toast.error("something went wrong with chat");
-      throw error;
-    }
-  };
+  const [dataExist, setDataExist] = useState("");
 
   const { data, isLoading, isError } = useQuery({
     queryFn: () => getSingleUser({ userId }),
@@ -64,6 +53,7 @@ const EditManager = () => {
       console.log("data", data);
       setInitialPhoto(data?.avatar);
       setTitle(data?.name);
+      setDataExist(data?.chatId);
     },
     refetchOnWindowFocus: false,
   });
@@ -96,17 +86,11 @@ const EditManager = () => {
 
   const handleUpdatePost = async () => {
     try {
+      let chatId = "";
+
       if (!title || !postSlug) {
         alert("Name Email Required");
         return;
-      }
-
-      let chatId = "";
-
-      const resp = await signUpChat(title, postSlug, postSlug);
-
-      if (resp) {
-        chatId = resp.user.id;
       }
 
       let updatedData = new FormData();
@@ -127,6 +111,46 @@ const EditManager = () => {
         updatedData.append("postPicture", picture);
       }
 
+      // if (!dataExist) {
+      //   updatedData.append(
+      //     "document",
+      //     JSON.stringify({
+      //       body,
+      //       title,
+      //       slug: postSlug,
+      //       manager: true,
+      //     })
+      //   );
+      // } else {
+      //   Auth.signup(title, postSlug, "txend1122")
+      //     .then((user) => {
+      //       chatId = user?.user?.id;
+      //       updatedData.append(
+      //         "document",
+      //         JSON.stringify({
+      //           body,
+      //           title,
+      //           slug: postSlug,
+      //           manager: true,
+      //           chatId,
+      //         })
+      //       );
+      //     })
+      //     .catch((er) => {
+      //       console.log("error", er);
+
+      //       updatedData.append(
+      //         "document",
+      //         JSON.stringify({
+      //           body,
+      //           title,
+      //           slug: postSlug,
+      //           manager: true,
+      //         })
+      //       );
+      //     });
+      // }
+
       updatedData.append(
         "document",
         JSON.stringify({
@@ -134,7 +158,6 @@ const EditManager = () => {
           title,
           slug: postSlug,
           manager: true,
-          chatId,
         })
       );
 
@@ -198,16 +221,7 @@ const EditManager = () => {
             >
               Delete Image
             </button>
-            <div className="mt-4 flex gap-2">
-              {data?.categories.map((category) => (
-                <Link
-                  to={`/blog?category=${category.name}`}
-                  className="inline-block font-roboto text-sm text-primary md:text-base"
-                >
-                  {category.name}
-                </Link>
-              ))}
-            </div>
+
             <div className="d-form-control w-full">
               <label className="d-label" htmlFor="title">
                 <span className="d-label-text">Name</span>

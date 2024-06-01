@@ -54,14 +54,16 @@ const RegisterPage = () => {
     const { name, email, password } = data;
     let connectCubeId = "";
 
-    Auth.signup(name, email, "txend1122")
-      .then((user) => {
-        connectCubeId = user?.user?.id;
-        mutate({ name, email, password, connectCubeId });
-      })
-      .catch((er) => {
-        mutate({ name, email, password, connectCubeId });
-      });
+    // Auth.signup(name, email, "txend1122")
+    //   .then((user) => {
+    //     connectCubeId = user?.user?.id;
+    //     mutate({ name, email, password, connectCubeId });
+    //   })
+    //   .catch((er) => {
+    //     mutate({ name, email, password, connectCubeId });
+    //   });
+
+    mutate({ name, email, password, connectCubeId });
   };
 
   const password = watch("password");

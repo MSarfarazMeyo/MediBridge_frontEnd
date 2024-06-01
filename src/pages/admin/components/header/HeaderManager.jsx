@@ -151,14 +151,6 @@ const HeaderManager = () => {
                 activeNavName={activeNavName}
                 setActiveNavName={setActiveNavName}
               />
-              <NavItem
-                title="Messages"
-                link="/manager/messages"
-                icon={<FaUser className="text-xl" />}
-                name="users"
-                activeNavName={activeNavName}
-                setActiveNavName={setActiveNavName}
-              />
             </div>
           </div>
         </div>

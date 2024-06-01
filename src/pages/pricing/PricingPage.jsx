@@ -14,6 +14,7 @@ import { HiOutlineCamera } from "react-icons/hi";
 export const PricingPage = () => {
   const [submitPlan, setSubmitPlane] = useState(false);
   const userState = useSelector((state) => state.user);
+
   const [photo, setPhoto] = useState(null);
 
   const { data: data, isLoading: profileIsLoading } = useQuery({

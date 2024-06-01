@@ -3,16 +3,25 @@ import MainLayout from "./MainLayout";
 import { images, stables } from "../constants";
 import { useSelector } from "react-redux";
 import ChatContext from "../services/chat-service";
+import { useNavigate } from "react-router-dom";
 
 export const DoctorProfileCard = ({ doctor }) => {
   const userState = useSelector((state) => state.user);
+  const navigate = useNavigate();
+
+  const status =
+    userState?.userInfo?.subscription?.status ||
+    userState?.subscription?.status;
+
+  console.log("status", status);
+  console.log("userState");
+
   const chat = useContext(ChatContext);
 
   const { startChat, close } = chat;
-
   const startChatting = () => {
-    close();
     doctor?.chatId && startChat(doctor?.chatId);
+    navigate("/chat");
   };
 
   return (
@@ -103,13 +112,13 @@ export const DoctorProfileCard = ({ doctor }) => {
         <div class="mt-1 flex flex-nowrap items-center justify-center gap-2 py-1 px-2 text-gray-700">
           <button
             onClick={startChatting}
-            disabled={!userState?.subscription?.status}
+            disabled={!status}
             class="mx-auto block w-[45%] rounded-full bg-gray-900 px-6 py-2 font-semibold text-white hover:shadow-lg disabled:pointer-events-none disabled:opacity-50"
           >
             Message
           </button>
           <button
-            disabled={!userState?.subscription?.status}
+            disabled={!status}
             class="mx-auto block w-[45%] rounded-full bg-gray-900 px-6 py-2 font-semibold text-white hover:shadow-lg disabled:pointer-events-none disabled:opacity-50"
           >
             Contact

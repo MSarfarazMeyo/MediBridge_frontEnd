@@ -22,7 +22,7 @@ const FoundUser = (props) => {
         <div className="user__avatar">
           <img
             src={
-              userInfo.avatar
+              userInfo?.avatar
                 ? userInfo.avatar
                 : "https://s.aficionados.com.br/imagens/frases-sasuke-uchiha-naruto_t.jpg"
             }

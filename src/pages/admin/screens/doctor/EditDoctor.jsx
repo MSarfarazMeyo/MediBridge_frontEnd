@@ -109,54 +109,67 @@ const EditDoctor = () => {
         updatedData.append("postPicture", picture);
       }
 
-      if (dataExist) {
-        updatedData.append(
-          "document",
-          JSON.stringify({
-            body,
-            categories,
-            title,
-            tags,
-            slug: postSlug,
-            caption,
-            doctor: true,
-          })
-        );
-      } else {
-        Auth.signup(title, postSlug, "txend1122")
-          .then((user) => {
-            chatId = user?.user?.id;
-            updatedData.append(
-              "document",
-              JSON.stringify({
-                body,
-                categories,
-                title,
-                tags,
-                slug: postSlug,
-                caption,
-                doctor: true,
-                chatId,
-              })
-            );
-          })
-          .catch((er) => {
-            console.log("error", er);
+      // if (dataExist) {
+      //   updatedData.append(
+      //     "document",
+      //     JSON.stringify({
+      //       body,
+      //       categories,
+      //       title,
+      //       tags,
+      //       slug: postSlug,
+      //       caption,
+      //       doctor: true,
+      //     })
+      //   );
+      // } else {
+      //   Auth.signup(title, postSlug, "txend1122")
+      //     .then((user) => {
+      //       chatId = user?.user?.id;
+      //       updatedData.append(
+      //         "document",
+      //         JSON.stringify({
+      //           body,
+      //           categories,
+      //           title,
+      //           tags,
+      //           slug: postSlug,
+      //           caption,
+      //           doctor: true,
+      //           chatId,
+      //         })
+      //       );
+      //     })
+      //     .catch((er) => {
+      //       console.log("error", er);
 
-            updatedData.append(
-              "document",
-              JSON.stringify({
-                body,
-                categories,
-                title,
-                tags,
-                slug: postSlug,
-                caption,
-                doctor: true,
-              })
-            );
-          });
-      }
+      //       updatedData.append(
+      //         "document",
+      //         JSON.stringify({
+      //           body,
+      //           categories,
+      //           title,
+      //           tags,
+      //           slug: postSlug,
+      //           caption,
+      //           doctor: true,
+      //         })
+      //       );
+      //     });
+      // }
+
+      updatedData.append(
+        "document",
+        JSON.stringify({
+          body,
+          categories,
+          title,
+          tags,
+          slug: postSlug,
+          caption,
+          doctor: true,
+        })
+      );
 
       mutateUpdatePostDetail({
         updatedData,
